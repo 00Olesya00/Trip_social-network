@@ -1,0 +1,105 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+entity user{
+    id
+    login
+    password
+    role_id
+}
+
+entity user_data{
+    user_id
+    about
+    email
+    city_id
+}
+
+entity authorities {
+    id
+    role
+}
+
+entity food {
+    id
+    location_id
+    title
+    score
+    description
+    price
+}
+
+entity country {
+    id
+    title
+}
+
+entity city {
+    id
+    title
+    region_id
+}
+
+entity region {
+    id
+    title
+    country_id
+}
+
+entity location {
+    id
+    city_id
+    title
+    address
+}
+
+entity rest {
+    id
+    location_id
+    type
+    price
+}
+
+entity sight {
+    id
+    title
+    about
+    location_id
+}
+
+entity event {
+    id
+    title
+    about
+    day
+    time
+    price
+    location_id
+    city_id
+}
+
+entity trip {
+    id
+    user_id
+    from_city_id
+    to_city_id
+    status
+    start_date
+    end_date
+}
+
+user |o--|| user_data : user_id
+user |o--|| trip : user_id
+country }|--|| region : country_id
+city }|--|| location : city_id
+city }|--|| event : city_id
+location }|--|| rest : location_id
+location }|--|| food : location_id
+location }|--|| event : location_id
+city |o--|| sight : city_id
+trip }|--|{ city
+user_data }|--|{ city
+region }|--|{ city : region_id
+user }|--|{ authorities : role_id
+
+@enduml
