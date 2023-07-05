@@ -75,7 +75,6 @@ entity event {
     time
     price
     location_id
-    city_id
 }
 
 entity trip {
@@ -92,11 +91,10 @@ user |o--|| user_data : user_id
 user |o--|| trip : user_id
 country }|--|| region : country_id
 city }|--|| location : city_id
-city }|--|| event : city_id
 location }|--|| rest : location_id
 location }|--|| food : location_id
 location }|--|| event : location_id
-city |o--|| sight : city_id
+location |o--|| sight : location_id
 trip }|--|{ city
 user_data }|--|{ city
 region }|--|{ city : region_id
