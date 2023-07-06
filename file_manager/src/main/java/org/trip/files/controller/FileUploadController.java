@@ -1,10 +1,8 @@
 package org.trip.files.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.trip.files.service.FileUploadService;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
