@@ -1,8 +1,12 @@
 package org.trip.files.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+import org.trip.files.entity.Images;
+import org.trip.files.repository.ImagesRepository;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -15,6 +19,9 @@ import java.nio.file.Path;
 @Service
 @Slf4j
 public class FileUploadService {
+
+    @Autowired
+    ImagesRepository imagesRepository;
     private static final long MAX_FILE_SIZE = 50 * 1024 * 1024; // 20MB
 
     private final String uploadFolder = "upload\\"; // Specify the folder path where you want to save the files
@@ -58,6 +65,13 @@ public class FileUploadService {
                 Files.write(Path.of(uploadFolder + filename), content);
                 log.info("file has been stored");
             }
+            Images image = new Images(uploadFolder + filename, filename);
+            imagesRepository.save(image);
         }
+    }
+
+    private void deleteFile(Long id){
+        Images images = imagesRepository.getReferenceById(id);
+        imagesRepository.delete(images);
     }
 }
