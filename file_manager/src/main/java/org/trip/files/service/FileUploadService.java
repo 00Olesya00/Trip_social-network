@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+import org.trip.files.entity.Extensions;
 import org.trip.files.entity.Images;
+import org.trip.files.repository.ExtensionsRepository;
 import org.trip.files.repository.ImagesRepository;
 
 import javax.servlet.ServletException;
@@ -22,6 +24,8 @@ public class FileUploadService {
 
     @Autowired
     ImagesRepository imagesRepository;
+    @Autowired
+    ExtensionsRepository extensionsRepository;
     private static final long MAX_FILE_SIZE = 50 * 1024 * 1024; // 20MB
 
     private final String uploadFolder = "upload\\"; // Specify the folder path where you want to save the files
@@ -53,8 +57,11 @@ public class FileUploadService {
             String contentType = part.getContentType();
             String parameterName = part.getName();
             String filename = part.getSubmittedFileName();
-            if (part.getSize() > MAX_FILE_SIZE){
+            String extension = filename.substring(filename.lastIndexOf("."));
+            if (part.getSize() > MAX_FILE_SIZE) {
                 throw new IllegalArgumentException("File size exceeds the maximum limit of 50MB");
+            } else if (extensionsRepository.findByExtension(extension) != null) {
+                throw new IllegalArgumentException("You cannot upload file with extension: " + extension);
             }
             log.info("Content type: " + contentType);
             log.info("Parameter name: " + parameterName);
@@ -66,6 +73,11 @@ public class FileUploadService {
                 log.info("file has been stored");
             }
             Images image = new Images(uploadFolder + filename, filename);
+            Extensions extensions = new Extensions();
+            extensions.setExtension(extension);
+            extensions.setDescription(filename);
+            extensions.setActive(1L);
+            image.setExtensionId(extensions);
             imagesRepository.save(image);
         }
     }

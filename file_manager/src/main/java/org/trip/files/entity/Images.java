@@ -1,19 +1,20 @@
 package org.trip.files.entity;
 
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "images")
 @Data
+@NoArgsConstructor
 public class Images {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -22,12 +23,17 @@ public class Images {
     
     @Column(name = "description")
     private String description;
-    
-    @Column(name = "extension_id")
-    private Long extensionId;
 
-    public Images(String s, String filename) {
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "extension_id")
+    private Extensions extensions;
+
+    public Images(String url, String filename) {
+        this.url = url;
+        this.description = filename;
     }
 
-    public Images() {}
+    public void setExtensionId(Extensions extensions) {
+        this.extensions = extensions;
+    }
 }
