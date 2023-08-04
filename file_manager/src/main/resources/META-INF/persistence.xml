@@ -1,0 +1,6 @@
+<persistence>
+    <persistence-unit name="Trip_advisor">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    </persistence-unit>
+
+</persistence>
