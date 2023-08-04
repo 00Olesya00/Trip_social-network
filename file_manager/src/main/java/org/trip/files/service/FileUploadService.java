@@ -48,7 +48,7 @@ public class FileUploadService {
         if (!folder.canWrite()) {
             throw new IllegalArgumentException("No write access to folder: " + folderPath);
         }
-        log.info("Запись возможна");
+        log.info("You can write it");
     }
 
     private void saveFile(HttpServletRequest request) throws IOException, ServletException {
